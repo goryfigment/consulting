@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from base import get_base_url, models_to_dict
 # MODELS
 from consulting.models.default import User as DefaultUser, Query
-from consulting.settings import database as mysql
+from consulting.settings import open_database_connection
 from django.contrib.auth import logout
 
 
@@ -94,7 +94,8 @@ def dashboard(request):
         logout(request)
 
     database = {}
-
+    database_connection = open_database_connection()
+    mysql = database_connection.cursor()
     mysql.execute("SHOW DATABASES")
 
     exclude_list = ['information_schema', 'performance_schema', 'sys', 'mysql']
@@ -117,6 +118,9 @@ def dashboard(request):
             database[database_name] = columns
 
         database[database_name] = columns
+
+    mysql.close()
+    database_connection.close()
 
     # GET ALL QUERIES
     queries = Query.objects.all()

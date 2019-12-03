@@ -1,6 +1,6 @@
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from consulting.decorators import login_required, data_required
-from consulting.settings import database as mysql
+from consulting.settings import open_database_connection
 from consulting.models.default import Query
 from base import models_to_dict
 
@@ -10,10 +10,11 @@ from base import models_to_dict
 def get_table_columns(request):
     database_name = request.BODY['database_name']
     tables = request.BODY['tables']
-
     database = {}
 
-    mysql.execute("USE `information_schema`")
+    database_connection = open_database_connection()
+    mysql = database_connection.cursor()
+    mysql.execute("USE information_schema")
     for table in tables:
         table = str(table)
         database[table] = []
@@ -24,6 +25,9 @@ def get_table_columns(request):
         for result in results:
             database[table].append(result[0])
 
+    mysql.close()
+    database_connection.close()
+
     return JsonResponse({'tables': database, 'database_name': database_name}, safe=False)
 
 
@@ -33,6 +37,9 @@ def get_relationships(request):
     database_name = request.BODY['database_name']
     table_name = request.BODY['table_name']
     columns = request.BODY['columns']
+
+    database_connection = open_database_connection()
+    mysql = database_connection.cursor()
     mysql.execute("USE `information_schema`")
     mysql.execute("SELECT TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME "
                   "FROM KEY_COLUMN_USAGE "
@@ -87,6 +94,9 @@ def get_relationships(request):
 
             sample_data.setdefault(table, []).append(dict_data)
 
+    mysql.close()
+    database_connection.close()
+
     return JsonResponse({'relationship_map': relationship_map, 'table_name': table_name, 'sample_data': sample_data, 'columns': columns, 'database_name': database_name}, safe=False)
 
 
@@ -98,12 +108,6 @@ def create_query(request):
     table_name = request.BODY['table_name']
     query = request.BODY['query']
     relationship_map = request.BODY['relationship_map']
-
-    # //{
-    # //    'database_name': 'test',
-    # //    'query': {
-    # //        'table': {'column': 'new_value'}
-    # //    },
 
     # Create SELECT statement
     select_statement = 'SELECT'
@@ -130,11 +134,17 @@ def create_query(request):
         if i != (len(relationship_map) - 1):
             on_statement += ' AND '
 
+    if on_statement == 'ON ':
+        on_statement = ''
+
     # print select_statement
     # print join_statement
     # print on_statement
 
     sql_statement = select_statement[:-1] + ' ' + join_statement + on_statement
+
+    database_connection = open_database_connection()
+    mysql = database_connection.cursor()
     mysql.execute("USE `" + database_name + "`")
     mysql.execute(sql_statement)
     results = mysql.fetchall()
@@ -164,6 +174,9 @@ def create_query(request):
     # FROM customer JOIN receipt JOIN item JOIN inventory
     # ON customer.id = receipt.customer_id AND inventory.item_id = item.id AND receipt.item_id = item.id
 
+    mysql.close()
+    database_connection.close()
+
     return JsonResponse({'columns': columns, 'results': query_database, 'name': query_name, 'id': created_query.id, 'queries': models_to_dict(queries)}, safe=False)
 
 
@@ -171,9 +184,17 @@ def create_query(request):
 @data_required(['id'], 'GET')
 def get_query(request):
     query_object = Query.objects.get(id=request.GET['id'])
+
+    database_connection = open_database_connection()
+    mysql = database_connection.cursor()
     mysql.execute("USE `" + query_object.database + "`")
-    mysql.execute(query_object.query['query'])
+    mysql.execute(query_object.query['query'].strip())
+
+    print "USE `" + query_object.database + "`"
+    print query_object.query['query'].strip()
+
     results = mysql.fetchall()
+
     columns = query_object.query['columns']
     query_database = []
 
@@ -181,6 +202,12 @@ def get_query(request):
         current_row = {}
         for i, column in enumerate(row):
             current_row[columns[i]] = column
+
         query_database.append(current_row)
+
+    mysql.close()
+    database_connection.close()
+
+    print query_database
 
     return JsonResponse({'results': query_database, 'name': query_object.name, 'description': query_object.description, 'columns': columns, 'id': query_object.id}, safe=False)

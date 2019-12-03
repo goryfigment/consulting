@@ -238,7 +238,7 @@ $(document).on('click', '.query-item', function () {
     };
 
     function success(response) {
-        //console.log(JSON.stringify(response));
+        console.log(JSON.stringify(response));
 
         var $tableWrapper = $('#query-table-wrapper');
         $tableWrapper.empty();
