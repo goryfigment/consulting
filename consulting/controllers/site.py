@@ -98,12 +98,12 @@ def dashboard(request):
     mysql = database_connection.cursor()
     mysql.execute("SHOW DATABASES")
 
-    exclude_list = ['information_schema', 'performance_schema', 'sys', 'mysql']
+    exclude_list = ['information_schema', 'performance_schema', 'sys', 'mysql', 'ktdemo$kt-database']
 
     # Make database list
     for database_name in mysql:
         database_name = database_name[0]
-        if database_name != 'information_schema' and database_name != 'performance_schema' and database_name != 'sys':
+        if database_name not in exclude_list:
             database[str(database_name)] = {}
 
     # Get tables and columns

@@ -190,9 +190,6 @@ def get_query(request):
     mysql.execute("USE `" + query_object.database + "`")
     mysql.execute(query_object.query['query'].strip())
 
-    print "USE `" + query_object.database + "`"
-    print query_object.query['query'].strip()
-
     results = mysql.fetchall()
 
     columns = query_object.query['columns']
