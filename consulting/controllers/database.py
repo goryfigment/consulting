@@ -13,7 +13,7 @@ def get_table_columns(request):
 
     database = {}
 
-    mysql.execute("USE information_schema")
+    mysql.execute("USE `information_schema`")
     for table in tables:
         table = str(table)
         database[table] = []
@@ -33,7 +33,7 @@ def get_relationships(request):
     database_name = request.BODY['database_name']
     table_name = request.BODY['table_name']
     columns = request.BODY['columns']
-    mysql.execute("USE information_schema")
+    mysql.execute("USE `information_schema`")
     mysql.execute("SELECT TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME "
                   "FROM KEY_COLUMN_USAGE "
                   "WHERE TABLE_SCHEMA = '" + database_name + "' AND REFERENCED_TABLE_SCHEMA IS NOT NULL AND REFERENCED_TABLE_NAME IS NOT NULL AND REFERENCED_COLUMN_NAME IS NOT NULL")
@@ -68,7 +68,7 @@ def get_relationships(request):
 
     # GET SAMPLE DATA FOR EACH TABLE FIRST 3!
     # select top 100 colA, colB from myTable
-    mysql.execute("USE " + database_name)
+    mysql.execute("USE `" + database_name + "`")
 
     sample_data = {}
 
@@ -135,7 +135,7 @@ def create_query(request):
     # print on_statement
 
     sql_statement = select_statement[:-1] + ' ' + join_statement + on_statement
-    mysql.execute("USE " + database_name)
+    mysql.execute("USE `" + database_name + "`")
     mysql.execute(sql_statement)
     results = mysql.fetchall()
 
@@ -171,7 +171,7 @@ def create_query(request):
 @data_required(['id'], 'GET')
 def get_query(request):
     query_object = Query.objects.get(id=request.GET['id'])
-    mysql.execute("USE " + query_object.database)
+    mysql.execute("USE `" + query_object.database + "`")
     mysql.execute(query_object.query['query'])
     results = mysql.fetchall()
     columns = query_object.query['columns']

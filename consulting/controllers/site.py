@@ -107,7 +107,7 @@ def dashboard(request):
 
     # Get tables and columns
     for database_name in database:
-        mysql.execute("USE " + database_name)
+        mysql.execute("USE `" + database_name + "`")
         mysql.execute("SHOW TABLES")
 
         columns = []
