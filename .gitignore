@@ -98,9 +98,10 @@ ENV/
 .idea/
 
 # Files I don't want git to see
-description.txt
-goals.txt
+description
+goals
 test.py
+package-lock.json
 
 migrations
 node_modules
