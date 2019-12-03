@@ -31,7 +31,7 @@ function addQuerySideBar(queries) {
 
     for (var i = 0; i < queries.length; i++) {
         var currentQuery = queries[i];
-        var currentDatabase = currentQuery['database'];
+        var currentDatabase = currentQuery['database'].replace(/[^A-Za-z]/g, '');
         var $sideDatabaseWrapper = $('.' + currentDatabase + '-list');
 
         if(!$sideDatabaseWrapper.length) {

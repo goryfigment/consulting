@@ -205,6 +205,4 @@ def get_query(request):
     mysql.close()
     database_connection.close()
 
-    print query_database
-
     return JsonResponse({'results': query_database, 'name': query_object.name, 'description': query_object.description, 'columns': columns, 'id': query_object.id}, safe=False)
