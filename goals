@@ -1,0 +1,32 @@
+- Change home template --DONE
+- Create an Access Code --DONE
+- Make a database --DONE
+
+------
+
+- Create DASHBOARD UI
+    - Query Left Bar --DONE
+    - Query Database --DONE
+
+
+- Create Query
+1. Name, Description
+2. If more than 1, Choose Database --DONE
+
+TABLE_SCHEMA = database
+
+relationship_map = {'database_name': [{'table_name', 'column_name', 'referenced_table', 'referenced_column'}]}
+
+Need all related tables
+Need their columns
+Need sample data first 3?
+
+one customer to many receipts
+if customer table is chosen then look for reference_table
+if receipt table is chosen then look for table_name
+
+
+3. Choose Table
+    -Then show all tables (that can join)/connected by foreign key
+4. Choose Column for Tables
+5. Default Order

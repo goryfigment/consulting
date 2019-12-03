@@ -1,0 +1,26 @@
+{{#each sample_data}}
+    <div>
+        <h4>{{@key}}</h4>
+        <table class="import-table table-container" data-database="{{../database_name}}" data-table="{{@key}}" data-selected_table="{{../table_name}}">
+            <thead>
+                <tr>
+                    {{#each (dict ../columns @key)}}
+                        <th><input class="header-input" data-orig_value="{{this}}" value="{{this}}" data-column="{{@index}}" style="width: 12ch" /></th>
+                    {{/each}}
+                </tr>
+                <tr>
+                    {{#each (dict ../columns @key)}}
+                        <th><input class="include-input" type="checkbox" data-column="{{@index}}" checked /> Include</th>
+                    {{/each}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each this}}
+                    <tr>
+                        {{importTableHandler this (dict ../../columns @../key)}}
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+{{/each}}

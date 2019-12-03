@@ -1,0 +1,38 @@
+@font-face {
+    font-family: Karla;
+    src: url(/templates/bundle/assets/fonts/Karla-Regular.ttf);
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Karla;
+    src: url(/templates/bundle/assets/fonts/Karla-Italic.ttf);
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: Karla;
+    src: url(/templates/bundle/assets/fonts/Karla-Bold.ttf);
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Karla;
+    src: url(/templates/bundle/assets/fonts/Karla-BoldItalic.ttf);
+    font-weight: bold;
+    font-style: italic;
+}
+
+body {
+    font-family: 'Karla', Arial, Helvetica, sans-serif, Georgia, serif;
+    margin: 0;
+    min-height: 100vh;
+    max-height: 100vh;
+    min-width: fit-content;
+    color: #ccc;
+    background: #2A2A2A;
+    overflow: hidden;
+}

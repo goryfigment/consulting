@@ -1,0 +1,76 @@
+Hi Kevin, I know you are busy so I laid out the following plan and instructions for your programmers to help get me started. I plan to create the following application to allow you to easily go throughout your business. If any of the following does not work for you please let me know as I intend to make this as smooth as possible, to help tailor custom needs. The following is a description of the application: To create a query within the app without having to know a single line of code. This will allow anyone to create a query to retrieve data without have to go through an interpreter/programmer to retrieve specific data.
+
+
+Hi Kevin, sorry if I haven't gotten back to you it has been a crazy week for me. I've outlined the following application that I can build for you that will allow you to create query's yourself whenever necessary without needing any assistance. Below is the authentication to access the application and the process the user will go through to create a query on the website itself, which will handle most case scenarios and handle more difficult queries there will be an option to create an actual query and execute. The query you make will be saved and easily access on the left side bar to view later.
+
+
+The Authentication of the application:
+1. Register (Requires access code)
+2. Login
+
+The following is the process a user would go through to create their own query. This will handle most scenarios and to handle special cases.
+CHOOSE DATABASE
+1. If multiple databases, user chooses database to search.
+CHOOSE TABLE/TABLES
+2. User chooses table to search
+    a. Add a feature to search multiple tables
+CHOOSE COLUMNS
+3. User chooses specific data they want from table/tables
+SPECIFY CONDITIONS
+4. User chooses conditions for columns to narrow the search
+   - ie. such as time frame (within 3hrs from now), 'price' is greater then 1.00, etc.
+DEFINE ORDER
+5. User chooses the order by a specific column.
+
+-OR-
+
+FOR PROGRAMMERS TO HANDLE ALL CASES
+1. Submit a query to retrieve data to handle all scenarios.
+
+User Interface Description: Created queries will be saved and listed in the left hand side with the ability to categorize them. Users will be able click on them again to view the data.
+
+
+With an application like this it will allow anyone to view specific data in the heat of the moment, and features can be added to meet business needs. This kind of project will take me approximately 40 hours to build the base features to start creating and I won't need to connect to your database to finish it since that was the barrier last time we spoke. If you feel this will bring significant value to your everyday business then you can call or message me to confirm that I should get start this project immediately.
+
+
+Potential Features that could be added later (Not included in base design):
+1. PDF printable results
+2. Create conditions that highlight specific rows such as red, yellow, green to provide easy readability
+3. Create line graphs (or other graphs) that the user defines the x-axis or y-axis.
+4. Making a request every 'x' seconds to update the data without refreshing the page with a timer of next refresh.
+
+
+Positives:
+
+A. Allows the president or anyone to view specific data in the heat of the moment without any downtime or relying on anyone to retrieve it for them.
+B. Very customary features adds flexibility to handle multiple scenario's.
+C. Features can be added to meet tailoring needs.
+D. No paid programs/server actually hosting needed.
+E. User friendly and automated.
+
+Negatives:
+
+A. Takes more time to create the application.
+More negatives to be determined.
+
+
+All I need to start the project is to be able to connect to the database. Or an sql file of the database as an example for me.
+
+The following command will make a user and create read only permissions:
+
+CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';
+GRANT SELECT ON *.* TO 'username'@'localhost' IDENTIFIED BY 'password';
+
+PERMISSION TABLE:
+ALL- as we saw previously, this would allow a MySQL user full access to a designated database (or if no database is selected, global access across the system)
+CREATE- allows them to create new tables or databases
+DROP- allows them to them to delete tables or databases
+DELETE- allows them to delete rows from tables
+INSERT- allows them to insert rows into tables
+SELECT- allows them to use the SELECT command to read through databases
+UPDATE- allow them to update table rows
+GRANT OPTION- allows them to grant or remove other users’ privileges
+
+or
+
+Exporting database to a SQL file to get me started.

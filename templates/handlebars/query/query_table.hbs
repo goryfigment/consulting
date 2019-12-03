@@ -1,0 +1,24 @@
+{{#if columns}}
+    <div id="body-header-wrapper">
+        <h4>{{name}}</h4>
+        <p>{{#if this.description}}{{this.description}}{{else}}No Description{{/if}}</p>
+    </div>
+
+    <table id="query-table" class="table-container {{#if edit}}popup-table{{/if}}">
+        <thead>
+            <tr>
+                {{#each columns}}
+                    <th class="custom-column" data-value="{{this}}">{{this}}</th>
+                {{/each}}
+            </tr>
+        </thead>
+
+        <tbody>
+            {{#each results}}
+                <tr>
+                    {{tableHandler this ../columns}}
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+{{/if}}

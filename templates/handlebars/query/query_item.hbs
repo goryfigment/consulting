@@ -1,0 +1,11 @@
+<li class="query-item{{#ifCond id '==' ../active_query}} active{{/ifCond}}" data-id="{{this.id}}">
+    <div>
+        <i class="fas fa-stream"></i>
+        <h5>{{this.name}}</h5>
+        <button class="edit-query-button"><i class="fas fa-cog"></i></button>
+    </div>
+
+    <div>
+        <p>Desc: {{#if this.description}}{{this.description}}{{else}}No Description{{/if}}</p>
+    </div>
+</li>

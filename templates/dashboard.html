@@ -1,0 +1,60 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Query</title>
+    <link rel='shortcut icon' type='image/x-icon' href="{% static 'bundle/assets/whey2ez/whey2ez.ico' %}" />
+    <script>
+        var globals = {};
+        globals.base_url = '{{base_url}}';
+        globals.database = {{database|safe}};
+        globals.queries = {{queries|safe}};
+    </script>
+
+</head>
+<body>
+    {% csrf_token %}
+{#        Side MENU#}
+    <div id="side-menu">
+        <div>
+            <h1>KT Consulting</h1>
+            <p>Query</p>
+        </div>
+
+        <h2>Query <button id="create-query-button"><i class="fas fa-plus"></i></button></h2>
+        <div id="query-side-wrapper">
+
+        </div>
+    </div>
+{#        Side MENU#}
+
+    <div id="flex-wrapper">
+        <div id="header-wrapper">
+            <div id="nav-wrapper">
+                <a class="nav-links" id="home-link" href="/dashboard">Dashboard</a>
+                <span class="nav-links" id="account-link">Account</span>
+                <div id="account-wrapper">
+                    <div>{{ name }}
+                        <span id="username">{{ username }}</span>
+                    </div>
+                    <div class="account-links" id="logout-link"><span id="logout-icon"><i class="fas fa-sign-out-alt"></i></span>Logout</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="body-wrapper">
+            <div id="query-table-wrapper">
+                <div id="empty-body-wrapper">
+                    <i class="fas fa-database"></i>
+                    <h4>Uh Oh! Looks like we need to send some queries!</h4>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="overlay"></div>
+
+</body>
+</html>

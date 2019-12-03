@@ -1,0 +1,68 @@
+<div class="popup" id="query-creation-wrapper">
+    <div id="query-creation-container">
+        <div id="database-step">
+            <div class="header-wrapper">
+                <h4>DATABASE</h4>
+                <button id="exit-button">
+                    <div><i class="far fa-times-circle"></i></div>
+                    <div>esc</div>
+                </button>
+            </div>
+
+            <p>Select a database.</p>
+
+            <div id="database-wrapper">
+                {{#each database}}
+                    <div class="database next-step" data-database="{{@key}}" data-tables="{{this}}" data-step="table-step">
+                        <div>
+                            <h3>{{@key}}</h3>
+                            <ul>
+                                {{#each this}}
+                                    <li>- {{this}}</li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+
+        <div id="table-step">
+            <div class="header-wrapper">
+                <h4>TABLES</h4>
+                <button id="back-button" class="prev-step" data-step="database-step">
+                    <div><i class="fas fa-arrow-left"></i></div>
+                    <div>back</div>
+                </button>
+                <button id="exit-button">
+                    <div><i class="far fa-times-circle"></i></div>
+                    <div>esc</div>
+                </button>
+            </div>
+
+            <p>Select a table.</p>
+
+            <div id="table-wrapper"></div>
+        </div>
+
+        <div id="column-step">
+            <div class="header-wrapper">
+                <h4>COLUMN</h4>
+                <button id="exit-button">
+                    <div><i class="far fa-times-circle"></i></div>
+                    <div>esc</div>
+                </button>
+            </div>
+
+            <p>Select columns.</p>
+
+            <div id="column-wrapper">
+
+            </div>
+            <div id="submit-wrapper">
+                <button class="prev-step" id="no-submit" data-step="table-step" data-number="-1">Back</button>
+                <button id="query-submit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
