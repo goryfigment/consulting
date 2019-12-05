@@ -85,6 +85,29 @@ $(document).on('click', '#logout-link', function () {
     window.location.replace(globals.base_url + '/logout');
 });
 
+$(document).on('keyup', '#search-input', function () {
+    var $searchInput = $(this);
+    var searchValue = $searchInput.val().trim().toLowerCase();
+    var $table = $('#query-table');
+
+    //loops through rows
+    $table.find('tr').each(function() {
+        var $currentRow = $(this);
+        var $columns = $currentRow.find('td');
+        //loops through filters and compares
+        for (var i = 0; i < $columns.length; i++) {
+            //find each filter value
+            var filterValue = $columns.text().toLowerCase();
+            //if find match
+            if(filterValue.indexOf(searchValue) != -1) {
+                $currentRow.show();
+            } else {
+                $currentRow.hide();
+            }
+        }
+    })
+});
+
 //POPUP//
 $(document).on('click', 'body, #cancel-submit, #exit-button', function () {
     $('#overlay').removeClass('active');
@@ -127,7 +150,7 @@ $(document).on('click', '.prev-step', function () {
 //POPUP//
 
 //QUERY//
-$(document).on('click', '#create-query-button', function (e) {
+$(document).on('click', '#combine-button', function (e) {
     popupHandler(e, {'database': globals.database}, createQueryTemplate);
 });
 
@@ -253,6 +276,16 @@ $(document).on('click', '.query-item', function () {
 });
 
 $(document).on('click', '.edit-query-button', function (e) {
+    e.stopPropagation();
+    alert('Hang on! Feature yet to be added!');
+});
+
+$(document).on('click', '.join-button', function (e) {
+    e.stopPropagation();
+    alert('Hang on! Feature yet to be added!');
+});
+
+$(document).on('click', '.custom-button', function (e) {
     e.stopPropagation();
     alert('Hang on! Feature yet to be added!');
 });

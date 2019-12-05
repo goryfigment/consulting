@@ -4,6 +4,11 @@
         <p>{{#if this.description}}{{this.description}}{{else}}No Description{{/if}}</p>
     </div>
 
+    <div id="search-wrapper">
+        <span id="search-icon"><i class="fas fa-search"></i></span>
+        <input id="search-input" name="q" value="" autocomplete="off" placeholder="Search">
+    </div>
+
     <table id="query-table" class="table-container {{#if edit}}popup-table{{/if}}">
         <thead>
             <tr>
