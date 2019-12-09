@@ -26,6 +26,7 @@
 
 #body-wrapper {
     height: calc(100% - 67px);
+    overflow-x: auto;
 }
 
 #body-wrapper #empty-body-wrapper {
@@ -874,4 +875,20 @@ button[disabled=disabled], button:disabled {
 }
 
 
-/*BOUNCE*/
+/*BOUNCE*/.sortable {
+    cursor: pointer;
+}
+
+.sortable:not(.ascending):not(.descending):after {
+    content: "\25B4\25BE";
+    padding: 0 3px 0;
+    letter-spacing: -6px;
+}
+
+.sortable.ascending:after{
+    content: "\25BE";
+}
+
+.sortable.descending:after{
+    content: "\25B4";
+}

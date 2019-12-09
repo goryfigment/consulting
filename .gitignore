@@ -98,8 +98,7 @@ ENV/
 .idea/
 
 # Files I don't want git to see
-description
-goals
+notepad
 test.py
 package-lock.json
 

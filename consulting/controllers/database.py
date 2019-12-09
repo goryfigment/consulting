@@ -108,17 +108,18 @@ def create_query(request):
     table_name = request.BODY['table_name']
     query = request.BODY['query']
     relationship_map = request.BODY['relationship_map']
+    relationship_counter = 0
 
     # Create SELECT statement
     select_statement = 'SELECT'
     join_statement = 'FROM ' + table_name + ' '
-    on_statement = 'ON '
 
     columns = []
 
     for i, (table_key, table_value) in enumerate(query.items()):
         if table_key != table_name:
-            join_statement += "JOIN " + table_key + " "
+            join_statement += "LEFT JOIN " + table_key + " " + "ON " + relationship_map[relationship_counter] + " "
+            relationship_counter += 1
         for t, (orig_value, new_value) in enumerate(table_value.items()):
             columns.append(new_value)
             select_statement += " " + table_key + "." + orig_value
@@ -128,20 +129,25 @@ def create_query(request):
             else:
                 select_statement += ","
 
-    for i, relationship in enumerate(relationship_map):
-        on_statement += relationship
+    # for i, relationship in enumerate(relationship_map):
+    #     print relationship
+    #     on_statement += relationship
+    #
+    #     if i != (len(relationship_map) - 1):
+    #         on_statement += ' AND '
 
-        if i != (len(relationship_map) - 1):
-            on_statement += ' AND '
+    # on_statement += relationship_map[0]
 
-    if on_statement == 'ON ':
-        on_statement = ''
+    # if on_statement == 'ON ':
+    #     on_statement = ''
 
     # print select_statement
     # print join_statement
     # print on_statement
 
-    sql_statement = select_statement[:-1] + ' ' + join_statement + on_statement
+    sql_statement = select_statement[:-1] + ' ' + join_statement
+
+    print sql_statement
 
     database_connection = open_database_connection()
     mysql = database_connection.cursor()
@@ -167,12 +173,6 @@ def create_query(request):
     created_query.save()
 
     queries = Query.objects.all()
-
-    # USE transactions;
-    # USE transactions;
-    # SELECT customer.name as 'CUSTOMER NAME', item.name as 'ITEM NAME', receipt.id as 'RECEIPT ID', inventory.quantity as 'QUANTITY'
-    # FROM customer JOIN receipt JOIN item JOIN inventory
-    # ON customer.id = receipt.customer_id AND inventory.item_id = item.id AND receipt.item_id = item.id
 
     mysql.close()
     database_connection.close()
