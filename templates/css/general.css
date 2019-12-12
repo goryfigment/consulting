@@ -35,6 +35,7 @@ body {
     color: #ccc;
     background: #2A2A2A;
     display: flex;
+    overflow: hidden;
 }
 
 h1, h2, h3, h4, h5 {
@@ -99,14 +100,12 @@ textarea {
     border-radius: 1px;
     height: 100px;
     width: 220px;
-    line-height: 20px;
+    line-height: 18px;
     padding: 0 5px;
     background-color: #353535;
     color: #c2c3c3;
+    font-family: 'Karla', Arial, Helvetica, sans-serif, Georgia, serif;
 }
-/*button:hover {*/
-    /*background: #323232;*/
-/*}*/
 
 button.add {
     border: 1.2px #207934 solid;

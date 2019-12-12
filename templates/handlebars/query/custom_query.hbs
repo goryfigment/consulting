@@ -1,0 +1,39 @@
+<div class="popup" id="query-custom-wrapper">
+    <div id="query-custom-container">
+        <div class="header-wrapper">
+            <h4>CUSTOM QUERY</h4>
+            <button id="exit-button">
+                <div><i class="far fa-times-circle"></i></div>
+                <div>esc</div>
+            </button>
+        </div>
+
+        <div id="input-wrapper">
+            <div>
+                <span>
+                    <label for="query-database-input">DATABASE</label>
+                    <select id="query-database-input">
+                    {{#each database}}
+                        <option value="{{@key}}">{{@key}}</option>
+                    {{/each}}
+                    </select>
+                </span>
+                <span>
+                    <label for="query-column-input">COLUMNS</label>
+                    <input id="query-column-input" type="text" placeholder="Separate with a comma." />
+                </span>
+            </div>
+
+
+            <label for="query-sql-input">SQL</label>
+            <textarea id="query-sql-input"></textarea>
+        </div>
+        <p>Press 'Enter' to show results.</p>
+        <div id="update-table-wrapper"></div>
+    </div>
+
+    <div id="submit-wrapper">
+        <button id="cancel-submit">Cancel</button>
+        <button id="query-custom-submit">Submit</button>
+    </div>
+</div>

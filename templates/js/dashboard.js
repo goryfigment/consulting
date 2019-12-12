@@ -7,7 +7,11 @@ var createQueryTemplate = require('./../handlebars/query/create_query.hbs');
 var tableStepTemplate = require('./../handlebars/query/table_step.hbs');
 var columnStepTemplate = require('./../handlebars/query/column_step.hbs');
 var queryTableTemplate = require('./../handlebars/query/query_table.hbs');
+var updateTableTemplate = require('./../handlebars/query/update_table.hbs');
 var queryItemTemplate = require('./../handlebars/query/query_item.hbs');
+var queryEditTemplate = require('./../handlebars/query/query_edit.hbs');
+var queryEmptyTemplate = require('./../handlebars/query/query_empty.hbs');
+var customQueryTemplate = require('./../handlebars/query/custom_query.hbs');
 var databaseWrapperTemplate = require('./../handlebars/query/database_wrapper.hbs');
 
 var $ = require('jquery');
@@ -24,6 +28,8 @@ $(document).ready(function() {
         $queryItem = $('.query-item[data-id="' + queryId + '"]');
         $queryItem.click();
     }
+
+    globals.queries = {}
 });
 
 function addQuerySideBar(queries) {
@@ -40,7 +46,10 @@ function addQuerySideBar(queries) {
         }
 
         $sideDatabaseWrapper = $('.' + currentDatabase + '-list');
-        $sideDatabaseWrapper.append(queryItemTemplate(currentQuery));
+
+        var $createdHtml = $(queryItemTemplate(currentQuery));
+        $createdHtml.data('data', currentQuery);
+        $sideDatabaseWrapper.append($createdHtml);
     }
 }
 
@@ -146,7 +155,7 @@ $(document).on('keyup', '#search-input', function () {
 });
 
 //POPUP//
-$(document).on('click', 'body, #cancel-submit, #exit-button', function () {
+$(document).on('click', 'body, #cancel-submit, #exit-button, .cancel-button', function () {
     $('#overlay').removeClass('active');
 });
 
@@ -187,7 +196,7 @@ $(document).on('click', '.prev-step', function () {
 //POPUP//
 
 //QUERY//
-$(document).on('click', '#combine-button', function (e) {
+$(document).on('click', '#join-button', function (e) {
     popupHandler(e, {'database': globals.database}, createQueryTemplate);
 });
 
@@ -298,7 +307,7 @@ $(document).on('click', '.query-item', function () {
     };
 
     function success(response) {
-        console.log(JSON.stringify(response));
+        //console.log(JSON.stringify(response));
 
         var $tableWrapper = $('#query-table-wrapper');
         $tableWrapper.empty();
@@ -312,11 +321,6 @@ $(document).on('click', '.query-item', function () {
     sendRequest('/database/get_query/', data, 'GET', success, overlayError);
 });
 
-$(document).on('click', '.edit-query-button', function (e) {
-    e.stopPropagation();
-    alert('Hang on! Feature yet to be added!');
-});
-
 $(document).on('click', '.join-button', function (e) {
     e.stopPropagation();
     alert('Hang on! Feature yet to be added!');
@@ -327,3 +331,138 @@ $(document).on('click', '.custom-button', function (e) {
     alert('Hang on! Feature yet to be added!');
 });
 //QUERY//
+
+//EDIT QUERY//
+$(document).on('click', '.edit-query-button', function (e) {
+    e.stopPropagation();
+    var $this = $(this).closest('.query-item');
+    var id = $this.attr('data-id');
+    var data = $this.data('data');
+
+    popupHandler(e, data, queryEditTemplate);
+});
+
+$(document).on('click', '#delete-query-prompt', function () {
+    $('#delete-overlay').addClass('active');
+});
+
+$(document).on('click', '#delete-overlay, .delete-cancel-button', function () {
+    $('#delete-overlay').removeClass('active');
+});
+
+$(document).on('click', '#overlay-delete-wrapper', function (e) {
+    e.stopPropagation();
+});
+
+$(document).on('click', '#query-edit-submit', function () {
+    var data = {
+        'id': $(this).attr('data-id'),
+        'name': $('#query-name-input').val().trim().replace(/ +/g, " "),
+        'description': $('#query-desc-input').val().trim().replace(/ +/g, " "),
+        'query': $('#query-sql-input').val().trim().replace(/ +/g, " ")
+    };
+
+    function success(response) {
+        var $tableWrapper = $('#query-table-wrapper');
+        $tableWrapper.empty();
+
+        //APPEND TO SIDE BAR
+        addQuerySideBar(response['queries']);
+
+        $('.query-item[data-id="' + response['id'] + '"]').click();
+
+        $('#overlay').removeClass('active');
+    }
+
+    sendRequest('/query/edit/', data, 'POST', success, overlayError, 'edit');
+});
+
+$(document).on('click', '#query-delete-submit', function () {
+    var data = {
+        'id': $(this).attr('data-id')
+    };
+
+    function success(response) {
+        var $tableWrapper = $('#query-table-wrapper');
+        $tableWrapper.empty();
+
+        //APPEND TO SIDE BAR
+        addQuerySideBar(response['queries']);
+
+        var $queryItems = $('.query-item');
+
+        if($queryItems.length) {
+            $queryItems[0].click();
+        } else {
+            $tableWrapper.append(queryEmptyTemplate({}))
+        }
+
+        $('#overlay').removeClass('active');
+    }
+
+    sendRequest('/query/delete/', data, 'POST', success, overlayError, 'delete');
+});
+//EDIT QUERY//
+
+//CUSTOM QUERY//
+$(document).on('click', '#custom-button', function (e) {
+    popupHandler(e, {'database':globals.database}, customQueryTemplate);
+});
+
+$(document).on('click', '#query-custom-submit', function () {
+    var data = JSON.stringify({
+        'database': $('#query-database-input').val().trim().replace(/ +/g, " "),
+        'columns': $('#query-column-input').val().split(",").map(function(item) {return item.trim().replace(/ +/g, " ");}),
+        'query': $('#query-sql-input').val().trim().replace(/ +/g, " ")
+    });
+
+    function success(response) {
+        //console.log(JSON.stringify(response));
+
+        var $tableWrapper = $('#query-table-wrapper');
+        $tableWrapper.empty();
+        $tableWrapper.append(queryTableTemplate(response));
+
+        //APPEND TO SIDE BAR
+        addQuerySideBar(response['queries']);
+
+        $('.query-item[data-id="' + response['id'] + '"]').addClass('active');
+
+        $('#overlay').removeClass('active');
+    }
+
+    sendRequest('/database/custom_query/', data, 'POST', success, overlayError);
+});
+
+$(document).on('keydown', '#query-sql-input', function (e) {
+    if (e.keyCode == 13) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+});
+
+$(document).on('keyup', '#query-sql-input', function (e) {
+    if (e.keyCode == 13) {
+        var data = JSON.stringify({
+            'database': $('#query-database-input').val().trim().replace(/ +/g, " "),
+            'columns': $('#query-column-input').val().split(",").map(function(item) {return item.trim().replace(/ +/g, " ");}),
+            'query': $('#query-sql-input').val().trim().replace(/ +/g, " ")
+        });
+
+        sendRequest('/database/update_query/', data, 'POST', success, error);
+
+        var $tableWrapper = $('#update-table-wrapper');
+        $tableWrapper.empty();
+    }
+
+    function success(response) {
+        //console.log(JSON.stringify(response));
+        $tableWrapper.append(updateTableTemplate(response));
+    }
+
+    function error(response) {
+        $tableWrapper.append('<p class="error">' + response.responseText +'</p>');
+    }
+});
+//CUSTOM QUERY//
+

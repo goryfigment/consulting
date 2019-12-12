@@ -3,6 +3,7 @@ from consulting.decorators import login_required, data_required
 from consulting.settings import open_database_connection
 from consulting.models.default import Query
 from base import models_to_dict
+import mysql.connector as mysql_connector
 
 
 @login_required
@@ -178,6 +179,77 @@ def create_query(request):
     database_connection.close()
 
     return JsonResponse({'columns': columns, 'results': query_database, 'name': query_name, 'id': created_query.id, 'queries': models_to_dict(queries)}, safe=False)
+
+
+@login_required
+@data_required(['database', 'columns', 'query'], 'BODY')
+def custom_query(request):
+    current_user = request.user
+    database_name = request.BODY['database']
+    columns = request.BODY['columns']
+    sql_statement = request.BODY['query']
+    query_database = []
+
+    created_query = Query.objects.create(
+        user=current_user,
+        database=database_name,
+        query={'query': sql_statement, 'columns': columns}
+    )
+
+    query_name = 'Query#' + str(created_query.id)
+    created_query.name = query_name
+    created_query.save()
+
+    database_connection = open_database_connection()
+    mysql = database_connection.cursor()
+    mysql.execute("USE `" + created_query.database + "`")
+    mysql.execute(created_query.query['query'].strip())
+
+    results = mysql.fetchall()
+
+    for row in results:
+        current_row = {}
+        for i, column in enumerate(row):
+            current_row[columns[i]] = column
+
+        query_database.append(current_row)
+
+    queries = Query.objects.all()
+
+    mysql.close()
+    database_connection.close()
+
+    return JsonResponse({'columns': columns, 'results': query_database, 'name': query_name, 'id': created_query.id, 'queries': models_to_dict(queries)}, safe=False)
+
+
+@login_required
+@data_required(['database', 'columns', 'query'], 'BODY')
+def update_query(request):
+    database_name = request.BODY['database']
+    columns = request.BODY['columns']
+    sql_statement = request.BODY['query']
+    query_database = []
+    results = {}
+
+    try:
+        database_connection = open_database_connection()
+        mysql = database_connection.cursor()
+        mysql.execute("USE `" + database_name + "`")
+        mysql.execute(sql_statement.strip())
+        results = mysql.fetchall()
+        mysql.close()
+        database_connection.close()
+    except mysql_connector.Error as err:
+        return HttpResponseBadRequest(err.msg, 'application/json')
+
+    for row in results:
+        current_row = {}
+        for i, column in enumerate(row):
+            current_row[columns[i]] = column
+
+        query_database.append(current_row)
+
+    return JsonResponse({'columns': columns, 'results': query_database}, safe=False)
 
 
 @login_required

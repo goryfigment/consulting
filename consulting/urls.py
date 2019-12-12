@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from consulting.controllers import site, account_handler, database
+from consulting.controllers import site, account_handler, database, query
 
 urlpatterns = [
     url(r'^$', site.home, name='home'),
@@ -32,9 +32,15 @@ urlpatterns = [
     url(r'^account/change_password/$', account_handler.change_password, name='change_password'),
     url(r'^logout/$', account_handler.user_logout, name='logout'),
 
+    # Query
+    url(r'^query/delete/$', query.delete_query, name='delete_query'),
+    url(r'^query/edit/$', query.edit_query, name='edit_query'),
+
     # Database
     url(r'^database/table_columns/$', database.get_table_columns, name='table_columns'),
     url(r'^database/relationship_map/$', database.get_relationships, name='relationship_map'),
     url(r'^database/create_query/$', database.create_query, name='create_query'),
     url(r'^database/get_query/$', database.get_query, name='get_query'),
+    url(r'^database/custom_query/$', database.custom_query, name='custom_query'),
+    url(r'^database/update_query/$', database.update_query, name='update_query'),
 ]

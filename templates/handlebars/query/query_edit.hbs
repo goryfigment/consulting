@@ -1,0 +1,52 @@
+<div class="popup" id="query-edit-wrapper">
+    <button id="exit-button">
+        <div><i class="far fa-times-circle"></i></div>
+        <div>esc</div>
+    </button>
+
+    <div id="overlay-sidebar">
+        <ul>
+            <h5>QUERY SETTINGS</h5>
+            <li class="active" data-id="overview-wrapper">Overview</li>
+            <li id="delete-query-prompt">Delete Query</li>
+        </ul>
+    </div>
+
+    <div id="overview-wrapper">
+        <div class="header-wrapper">
+            <h4>QUERY OVERVIEW</h4>
+            <div id="overlay-input-wrapper">
+                <label>QUERY NAME</label>
+                <input id="query-name-input" type="text" value="{{name}}" />
+
+                <div id="textarea-wrapper">
+                    <div>
+                        <label for="query-desc-input">QUERY DESCRIPTION</label>
+                        <textarea id="query-desc-input" placeholder="No description">{{description}}</textarea>
+                    </div>
+
+                    <div>
+                        <label for="query-desc-input">SQL</label>
+                        <textarea id="query-sql-input" placeholder="No description">{{query.query}}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="submit-wrapper">
+            <button class="cancel-button" id="no-submit">Cancel</button>
+            <button id="query-edit-submit" data-id="{{id}}">Submit</button>
+        </div>
+    </div>
+
+    <div id="delete-overlay">
+        <div id="overlay-delete-wrapper">
+            <h4>Delete '{{name}}'</h4>
+            <p>Are you sure you want to delete {{name}}.<br/> This can't be undone.</p>
+
+            <div id="submit-wrapper">
+                <button class="delete-cancel-button" id="no-submit">Cancel</button>
+                <button id="query-delete-submit" data-id="{{id}}">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>

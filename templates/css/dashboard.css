@@ -441,12 +441,12 @@ button[disabled=disabled], button:disabled {
     font-size: 11px;
     font-weight: bold;
     color: #686868;
+    margin: 15px 0 10px;
 }
 
-#overlay input {
-    background: #f6f6f6;
-    border-bottom: 2px solid #ddd;
-    color: #5b5b5b;
+#overlay input[type="text"] {
+    background: #2e2d2d;
+    width: calc(100% - 10px);
 }
 
 #overlay #form-wrapper {
@@ -648,6 +648,168 @@ button[disabled=disabled], button:disabled {
 }
 /*QUERY*/
 
+/*EDIT*/
+#query-edit-wrapper {
+    width: 100%;
+    display: flex;
+    height: 100%;
+}
+
+#overlay-sidebar {
+    width: 350px;
+    background: #131313;
+}
+
+#overlay-sidebar ul {
+    list-style: none;
+    margin: 0;
+    float: right;
+    padding: 20px 0 0 0;
+    display: inline-block;
+    width: 160px;
+    height: 100%;
+    color: silver;
+}
+
+#overlay-sidebar h5 {
+    font-size: 11px;
+    margin: 10px 0;
+    cursor: default;
+}
+
+#overlay-sidebar li {
+    padding: 5px 7px;
+    margin: 3px 7px 3px 0;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all ease 0.5s;
+    font-size: 15px;
+}
+
+#overlay-sidebar li:hover {
+    background: #1c1c1c;
+}
+
+#overlay-sidebar li.active {
+    background: #323232;
+    color: white;
+    cursor: default;
+}
+
+#overview-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+#overview-wrapper .header-wrapper {
+    height: calc(100% - 70px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#overview-wrapper #textarea-wrapper {
+    display: flex;
+    margin-top: 20px;
+}
+
+#overview-wrapper #textarea-wrapper div:first-child {
+    margin-right: 20px;
+}
+
+#delete-query-prompt {
+    color: #f17272;
+}
+
+#overlay-sidebar #delete-query-prompt:hover {
+    background: rgba(229, 45, 45, 0.09);
+}
+
+#delete-overlay {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.72);
+    display: none;
+}
+
+#delete-overlay.active {
+    display: block;
+}
+
+#overlay-delete-wrapper {
+    position: absolute;
+    background: #0d0d0d;
+    width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 35%;
+    animation: bounce .4s linear
+}
+
+#delete-overlay #submit-wrapper {
+    background: #0d0d0d;
+}
+
+#delete-overlay #query-delete-submit {
+    background: #e94343;
+    border-radius: 1px;
+}
+/*EDIT*/
+
+/*CUSTOM*/
+#query-custom-wrapper {
+    width: 100%;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+#query-custom-container {
+    height: calc(100% - 50px);
+}
+
+#query-custom-wrapper #input-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#query-custom-wrapper #input-wrapper div {
+    display: flex;
+}
+
+#query-custom-wrapper #input-wrapper span {
+    margin: 0 10px;
+}
+
+#query-custom-wrapper #query-database-input {
+    width: 120px;
+}
+
+#query-custom-wrapper #query-column-input {
+    width: 200px;
+}
+
+#query-custom-wrapper #query-sql-input {
+    width: 650px;
+    height: 55px;
+}
+
+#query-custom-wrapper #update-table-wrapper {
+    min-width: 650px;
+    width: fit-content;
+    margin: 15px auto 0 auto;
+    padding: 0 12px;
+    overflow-y: auto;
+    height: calc(100% - 249px);
+    background: #1e1e1e;
+}
+/*CUSTOM*/
+
 /*BOUNCE*/
 @keyframes uploadModalBounceTransition {
     0% {
@@ -697,13 +859,13 @@ button[disabled=disabled], button:disabled {
 
 @-webkit-keyframes bounce {
     25% {
-        -webkit-transform: scale(.6);
-        transform: scale(.6)
+        -webkit-transform: scale(.8);
+        transform: scale(.95)
     }
 
     50% {
         -webkit-transform: scale(1.2);
-        transform: scale(1.2)
+        transform: scale(1.05)
     }
 
     to {
@@ -715,12 +877,12 @@ button[disabled=disabled], button:disabled {
 @keyframes bounce {
     25% {
         -webkit-transform: scale(.6);
-        transform: scale(.6)
+        transform: scale(.95)
     }
 
     50% {
         -webkit-transform: scale(1.2);
-        transform: scale(1.2)
+        transform: scale(1.05)
     }
 
     to {

@@ -1,0 +1,17 @@
+<table id="query-table" class="table-container {{#if edit}}popup-table{{/if}}">
+    <thead>
+        <tr>
+            {{#each columns}}
+                <th class="custom-column sortable" data-value="{{this}}">{{this}}</th>
+            {{/each}}
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#each results}}
+            <tr>
+                {{tableHandler this ../columns}}
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
